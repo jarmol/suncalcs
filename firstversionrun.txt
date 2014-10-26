@@ -1,0 +1,42 @@
+mylaptop@nc10:~/worksun$ python sunzenithcalc.py
+Enter month --> 8
+Enter day --> 20
+1. SUNRISE
+Date: 2014-8-20
+Zenith 90.0 degrees used
+N1 = 244.0, N2 = 1.0, N3 = 2.0, N = 232.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 5.9839 hours
+Sunrise local time is 6.9839 hours
+
+2. CIVIL TWILIGHT
+Date: 2014-8-20
+Zenith 96.0 degrees used
+N1 = 244.0, N2 = 1.0, N3 = 2.0, N = 232.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 5.3337 hours
+Sunrise local time is 6.3337 hours
+
+3. NAUTICAL TWILIGHT
+Date: 2014-8-20
+Zenith 102.0 degrees used
+N1 = 244.0, N2 = 1.0, N3 = 2.0, N = 232.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 4.6369 hours
+Sunrise local time is 5.6369 hours
+
+4. ASTRONOMICAL TWILIGHT
+Date: 2014-8-20
+Zenith 108.0 degrees used
+N1 = 244.0, N2 = 1.0, N3 = 2.0, N = 232.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 3.8562 hours
+Sunrise local time is 4.8562 hours
