@@ -1,32 +1,20 @@
-#  Hello
-#  could you help me please update this your source code for using multiple zenits
-import math
-znt_official = 90 
-znt_civil = 96 # degrees
-znt_nautical = 102 # degrees
-znt_astronomical = 108 # degrees
-d2r = math.pi/180.0	# conversion of angles in degrees to radians
-# Example
-# suncalc(2014,8,SUNRISE,48.142,17.099,znt_official){
-# 
-#  where to assing zenits value ?
-#  ----
-#  double suncalc(int year,char month,day,suncalctype, double lat1,lot1, char zenith);
-#  example
-#  suncalc(2014,8,SUNRISE,48.142,17.099,znt_official){
-#  Your day and localOffset is missing! 
-# double longitude = lot1;
-# double latitude = lat1;
-#  1. first calculate the day of the year
-#  double   N1,N2,N3,N;
-#  double   M,L,H,T;
-#  double   Lquadrant,Rquadrant,RA;
-#  double   sinDec,cosDec,cosH;
-#  double UT,localT,localOffset,lngHour;
+import math, time
 
+znt_official = 90 
+znt_civil = 96 		# degrees
+znt_nautical = 102 	# degrees
+znt_astronomical = 108 	# degrees
+d2r = math.pi/180.0	# conversion of angles in degrees to radians
+
+def human(decimhours):
+# This function converts floating hours to formatted time hh:mm:ss
+    h=decimhours  	# floating hours
+    s = 3600*h		# seconds
+    ts = time.strftime('%H:%M:%S', time.gmtime(s))
+    return ts
+
+#  I have added day and localOffset to suncalc function! 
 def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
-# Using date 20-August-2014, latitude 48.142 and longitude 17.099
-# suncalc(2014, 8, 20, "SUNRISE", 48.142, 17.099, 1, znt_official)
     print("Date: %d-%d-%d" % (year, month, day))
     print("Zenith %.1f degrees used" % zenith)
     N1 = math.floor(275 * month / 9)
@@ -51,6 +39,15 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     L = M + (1.916 * math.sin(d2r*M)) + (0.020 * math.sin(2 * M*d2r)) + 282.634
 
 #  NOTE: L potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
+    print("Test a) L = %f before" % L)
+ 
+    if (L > 360.0):
+        L-= 360.0
+    elif (L < -360.0):
+        L+= 360 
+
+    print("Test b) L = %f adjusted" % L)
+
 #  5a. calculate the Sun's right ascension
     RA = math.atan(0.91764 * math.tan(d2r*L))
 
@@ -93,12 +90,12 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     UT = (T - lngHour) % 24
 # NOTE: UT potentially needs to be adjusted into the range [0,24) by
 # adding/subtracting 24
-    
-    print("Sunrise UT is %.4f hours" % UT)
+        
+    print("Sunrise UT is %.4f hours = %s" % (UT, human(UT)))
 
 # 10. convert UT value to local time zone of latitude/longitude
     localT = UT + localOffset
-    print("Sunrise local time is %.4f hours" % localT)
+    print("Sunrise local time is %.4f hours = %s" % (localT, human(localT)))
 
 # end of suncalc()
 
