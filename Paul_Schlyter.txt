@@ -1,0 +1,17 @@
+mun@kone:~/sunfiles$ ./sunriset
+Longitude (+ is east) and latitude (+ is north) : 17.2 48.2
+Input date ( yyyy mm dd ) (ctrl-C exits): 2014 10 28
+Day length:                 10.16 hours
+With civil twilight         11.23 hours
+With nautical twilight      12.45 hours
+With astronomical twilight  13.65 hours
+Length of twilight: civil    0.54 hours
+                  nautical   1.15 hours
+              astronomical   1.75 hours
+Sun at south 10.58h UT
+Sun rises  5.50h UT, sets 15.66h UT
+Civil twilight starts  4.97h, ends 16.20h UT
+Nautical twilight starts  4.36h, ends 16.81h UT
+Astronomical twilight starts  3.76h, ends 17.41h UT
+mun@kone:~/sunfiles$ 
+
