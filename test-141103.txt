@@ -1,0 +1,78 @@
+Note differences in values M and L of versions KM & PS
+Compare to Moisio 
+http://www.moisio.fi/taivas/aurinkokalenteri.php
+?mode=1&zc=37
+&paikka=Helsinki
+&latdeg=60.1755556
+&long=24.9341667
+&dy=02&mn=11&yr=2014&kk=1
+
+Sunrise Sunset
+7:48	16:19 KM
+7:47	16:19 Moisio
+Helsinki: latitude 60.18, longitude 24.93
+
+$ python sunxcalc.py
+Enter year  --> 2014
+Enter month --> 11
+Enter day --> 3
+1. SUNRISE / SUNSET for Helsinki
+Date: 2014-11-3
+Day of the year: 307
+Zenith 90.8 degrees
+Daynumber d = 5421 since 31.12.1999
+PS: mean anomaly M = 298.986001 degrees adjusted
+KM: mean anomaly M = 299.468347 degrees adjusted
+KM: True longitude L = 220.417093
+PS: Mean longitude L = 222.1817, w = 283.1957, M = 298.9860
+Used KM: 
+KM: Right ascension RA = 218.005670 degr = 14:32:01 h
+Sun declination = -14.947 degr
+Sunrise local time is 07:47:09 (UT + 2.0 h)
+
+Zenith 90.8 degrees
+PS: mean anomaly M = 298.986001 degrees adjusted
+KM: mean anomaly M = 299.961147 degrees adjusted
+KM: True longitude L = 220.917886
+PS: Mean longitude L = 222.1817, w = 283.1957, M = 298.9860
+Used KM: 
+KM: Right ascension RA = 218.498257 degr = 14:33:59 h
+Sun declination = -15.103 degr
+Sunset local time is 16:19:19 (UT + 2.0 h)
+
+
+2. CIVIL TWILIGHT
+Zenith 96.0 degrees
+PS: mean anomaly M = 298.986001 degrees adjusted
+KM: mean anomaly M = 299.468347 degrees adjusted
+KM: True longitude L = 220.417093
+PS: Mean longitude L = 222.1817, w = 283.1957, M = 298.9860
+Used KM: 
+KM: Right ascension RA = 218.005670 degr = 14:32:01 h
+Sun declination = -14.947 degr
+Sunrise local time is 07:01:22 (UT + 2.0 h)
+
+
+3. NAUTICAL TWILIGHT
+Zenith 102.0 degrees
+PS: mean anomaly M = 298.986001 degrees adjusted
+KM: mean anomaly M = 299.468347 degrees adjusted
+KM: True longitude L = 220.417093
+PS: Mean longitude L = 222.1817, w = 283.1957, M = 298.9860
+Used KM: 
+KM: Right ascension RA = 218.005670 degr = 14:32:01 h
+Sun declination = -14.947 degr
+Sunrise local time is 06:11:27 (UT + 2.0 h)
+
+
+4. ASTRONOMICAL TWILIGHT for Helsinki
+Zenith 108.0 degrees
+PS: mean anomaly M = 298.986001 degrees adjusted
+KM: mean anomaly M = 299.468347 degrees adjusted
+KM: True longitude L = 220.417093
+PS: Mean longitude L = 222.1817, w = 283.1957, M = 298.9860
+Used KM: 
+KM: Right ascension RA = 218.005670 degr = 14:32:01 h
+Sun declination = -14.947 degr
+Sunrise local time is 05:23:00 (UT + 2.0 h)
+
