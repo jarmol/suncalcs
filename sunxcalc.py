@@ -19,10 +19,11 @@ def adjust(big_value, good_max):
     x = float(big_value)
     y = float(good_max)
 
+# negative values adjusted to be positive < 360
     if (x > y):
        x-= y*(x // y)
-    elif (x < -y):
-       x+= y*(-x // y)
+    elif (x < 0):
+       x+= y*(1 + (-x // y))
 
     return x
 
@@ -79,10 +80,10 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith, pfla
     Lx = M + (1.916 * math.sin(d2r*M)) + (0.020 * math.sin(2*M*d2r)) + 282.634 # KM
     Lx = adjust(Lx, 360.0)
     w = 282.9404 + 4.70935E-5 * d # PS: Mean longitude of perihelion
-    L = M + w 			# PS: Sun's mean longitude
+    L = Mo + w 			# PS: Sun's mean longitude
     L = adjust(L, 360.0)
     print ("KM: True longitude L = %f" % Lx)
-    print ("PS: Mean longitude L = %f" % L)
+    print ("PS: Mean longitude L = %.4f, w = %.4f, M = %.4f" % (L, w, Mo))
 
     if m_formula == 1:
         L = Lx
