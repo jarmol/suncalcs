@@ -1,4 +1,10 @@
-Note: Mean anomaly calculation using the formulas by KM
+Note: Mean anomaly calculation using the formulas marked with KM
+KM method is based on the algorithm
+by Nautical Almanac Office
+    United States Naval Observatory
+    Washington, DC 20392
+
+    See: http://williams.best.vwh.net/sunrise_sunset_algorithm.htm
 
 @nc10:~/worksun$ python sunxcalc.py 
 Enter year  --> 2014
