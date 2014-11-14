@@ -182,6 +182,7 @@ suncalc(year, month, day, "SUNSET", lat1, lon1, tz, znt_official, 0)
 
 print "\n2. CIVIL TWILIGHT"
 suncalc(year, month, day, "SUNRISE", lat1, lon1, tz, znt_civil, 0)
+suncalc(year, month, day, "SUNSET", lat1, lon1, tz, znt_civil, 0)
 
 print "\n3. NAUTICAL TWILIGHT"
 suncalc(year, month, day, "SUNRISE", lat1, lon1, tz, znt_nautical, 0)
