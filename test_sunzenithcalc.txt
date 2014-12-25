@@ -1,0 +1,70 @@
+Compare to this:
+http://calendar.zoznam.sk/sunset-sk.php?longitude=17.1067&latitude=48.1482&zenith=90.83333&timezone=05a1&city=&formsubmitted=1&firsttime=no&submittype=user&hy=2014#September
+The following is perfect!
+
+Jarmo-MacBook-Air:suncalcs railam$ python sunzenithcalc.py 
+Enter month --> 12
+Enter day --> 21
+1. SUNRISE
+Date: 2014-12-21
+Zenith 90.8 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 6.6508 hours = 06:39:03
+Sunrise local time is 7.6508 hours = 07:39:03
+
+2. CIVIL TWILIGHT
+Date: 2014-12-21
+Zenith 96.0 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 6.0407 hours = 06:02:26
+Sunrise local time is 7.0407 hours = 07:02:26
+
+3. NAUTICAL TWILIGHT
+Date: 2014-12-21
+Zenith 102.0 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 5.3771 hours = 05:22:37
+Sunrise local time is 6.3771 hours = 06:22:37
+
+4. ASTRONOMICAL TWILIGHT
+Date: 2014-12-21
+Zenith 108.0 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 4.7444 hours = 04:44:39
+Sunrise local time is 5.7444 hours = 05:44:39
+
+-------
+
+1. SUNSET
+Date: 2014-12-21
+Zenith 90.8 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 15.0011 hours = 15:00:04
+Sunrise local time is 16.0011 hours = 16:00:04
+
+2. CIVIL TWILIGHT
+Date: 2014-12-21
+Zenith 96.0 degrees used
+Day of the year N = 355.0 
+
+Latitude = 48.14 degrees (=0.8402 radians), longitude = 17.10 degrees
+Local offset 1.0 hours
+Sunrise UT is 15.6113 hours = 15:36:40
+Sunrise local time is 16.6113 hours = 16:36:40
+Jarmo-MacBook-Air:suncalcs railam$ 
+

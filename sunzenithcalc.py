@@ -1,10 +1,10 @@
 import math, time
 
-znt_official = 90 
-znt_civil = 96 		# degrees
-znt_nautical = 102 	# degrees
-znt_astronomical = 108 	# degrees
-d2r = math.pi/180.0	# conversion of angles in degrees to radians
+znt_official = 90.833		# fixed earlier 90.0 / JL 25.12.2014
+znt_civil = 96.0 		# degrees
+znt_nautical = 102.0 		# degrees
+znt_astronomical = 108.0 	# degrees
+d2r = math.pi/180.0		# conversion of angles in degrees to radians
 
 def human(decimhours):
 # This function converts floating hours to formatted time hh:mm:ss
@@ -13,15 +13,15 @@ def human(decimhours):
     ts = time.strftime('%H:%M:%S', time.gmtime(s))
     return ts
 
-#  I have added day and localOffset to suncalc function! 
+#  I have added day and localOffset to suncalc function / JL 
 def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     print("Date: %d-%d-%d" % (year, month, day))
-    print("Zenith %.1f degrees used" % zenith)
+    print("Zenith %.3f degrees used for %s" % (zenith, suncalctype))
     N1 = math.floor(275 * month / 9)
     N2 = math.floor((month + 9) / 12)
     N3 = (1 + math.floor((year - 4 * math.floor(year / 4) + 2) / 3))
     N = N1 - (N2 * N3) + day - 30
-    print("N1 = %.1f, N2 = %.1f, N3 = %.1f, N = %.1f \n" % (N1, N2, N3, N))
+    print("Day of the year N = %.1f \n" % N)
 
 #  2. convert the longitude to hour value and calculate an approximate time
     longitude = lot1
@@ -39,19 +39,28 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     L = M + (1.916 * math.sin(d2r*M)) + (0.020 * math.sin(2 * M*d2r)) + 282.634
 
 #  NOTE: L potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
-    print("Test a) L = %f before" % L)
+#    print("Test a) L = %f before" % L)
  
     if (L > 360.0):
         L-= 360.0
     elif (L < -360.0):
         L+= 360 
 
-    print("Test b) L = %f adjusted" % L)
+#    print("Test b) L = %f adjusted" % L)
 
 #  5a. calculate the Sun's right ascension
     RA = math.atan(0.91764 * math.tan(d2r*L))
 
+# Correction: added converting RA to degrees / JL 25.12.2014
+    RA /= d2r
+
 #  NOTE: RA potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
+#  Added this JL 25.12.2014
+    if (RA > 360.0):
+        RA-= 360.0
+    elif (RA < -360.0):
+        RA+= 360
+
 #  5b. right ascension value needs to be in the same quadrant as L
     Lquadrant = (math.floor( L/90)) * 90
     RAquadrant = (math.floor(RA/90)) * 90
@@ -106,14 +115,21 @@ day = int(raw_input('Enter day --> '))
 
 # Call suncalc()
 print "1. SUNRISE"
-suncalc(2014, month, day, "SUNRISE", 48.142, 17.099, 1.0, znt_official)
+suncalc(2014, month, day, "SUNRISE", 48.1482, 17.1067, 1.0, znt_official)
 
 print "\n2. CIVIL TWILIGHT"
-suncalc(2014, month, day, "SUNRISE", 48.142, 17.099, 1.0, znt_civil)
+suncalc(2014, month, day, "SUNRISE", 48.1482, 17.1067, 1.0, znt_civil)
 
 print "\n3. NAUTICAL TWILIGHT"
-suncalc(2014, month, day, "SUNRISE", 48.142, 17.099, 1.0, znt_nautical)
+suncalc(2014, month, day, "SUNRISE", 48.1482, 17.1067, 1.0, znt_nautical)
 
 print "\n4. ASTRONOMICAL TWILIGHT"
-suncalc(2014, month, day, "SUNRISE", 48.142, 17.099, 1.0, znt_astronomical)
+suncalc(2014, month, day, "SUNRISE", 48.1482, 17.1067, 1.0, znt_astronomical)
+
+print "\n-------\n"
+print "1. SUNSET"
+suncalc(2014, month, day, "SUNSET", 48.1482, 17.1067, 1.0, znt_official)
+
+print "\n2. CIVIL TWILIGHT"
+suncalc(2014, month, day, "SUNSET", 48.1482, 17.1067, 1.0, znt_civil)
 
