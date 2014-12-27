@@ -13,14 +13,17 @@ def human(decimhours):
     ts = time.strftime('%H:%M:%S', time.gmtime(s))
     return ts
 
-#  I have added day and localOffset to suncalc function / JL 
-def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
+def yday(year, month, day):
     print("Date: %d-%d-%d" % (year, month, day))
     N1 = math.floor(275 * month / 9)
     N2 = math.floor((month + 9) / 12)
     N3 = (1 + math.floor((year - 4 * math.floor(year / 4) + 2) / 3))
-    N = N1 - (N2 * N3) + day - 30
-    print("Day of the year N = %.1f \n" % N)
+    ydN = N1 - (N2 * N3) + day - 30
+    return ydN
+
+#  I have added day and localOffset to suncalc function / JL 
+def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
+    N = yday(year, month, day)
     print("Zenith %.3f degrees used for %s" % (zenith, suncalctype))
 
 #  2. convert the longitude to hour value and calculate an approximate time
@@ -39,14 +42,11 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     L = M + (1.916 * math.sin(d2r*M)) + (0.020 * math.sin(2 * M*d2r)) + 282.634
 
 #  NOTE: L potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
-#    print("Test a) L = %f before" % L)
  
     if (L > 360.0):
         L-= 360.0
     elif (L < -360.0):
         L+= 360 
-
-#    print("Test b) L = %f adjusted" % L)
 
 #  5a. calculate the Sun's right ascension
     RA = math.atan(0.91764 * math.tan(d2r*L))
@@ -65,17 +65,16 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     Lquadrant = (math.floor( L/90)) * 90
     RAquadrant = (math.floor(RA/90)) * 90
     RA = RA + (Lquadrant - RAquadrant)
+
 # 5c. right ascension value needs to be converted into hours
     RA = RA / 15
+
 # 6. calculate the Sun's declination
     sinDec = 0.39782 * math.sin(d2r*L)
     cosDec = math.cos(math.asin(sinDec))
 
 # 7a. calculate the Sun's local hour angle
     latitude = d2r*lat1
-
-#    print("Latitude = %.2f degrees, longitude = %.2f degrees" % (latitude, longitude))
-#    print("Local offset %.1f hours" % localOffset)
 
     cosH = (math.cos(d2r*zenith) - (sinDec * math.sin(latitude))) / (cosDec * math.cos(latitude))
     if (cosH > 1):
@@ -84,12 +83,10 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     if (cosH < -1):
         print "the sun never sets on this location (on the specified date)\n"
 
-#  7b. finish calculating H and convert into hours
-   
+#  7b. finish calculating H and convert into hours   
     H = math.acos(cosH)/d2r # converted to degrees
 
 #  if rising time is desired:
-
     if (suncalctype == "SUNRISE" ):
         H = 360 - H
 	prtx = "Sunrise"
@@ -117,33 +114,36 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
 # Main begin
 
 now = datetime.datetime.now()
-year = now.year
-month = now.month
-day = now.day
+nyear = now.year
+nmonth = now.month
+nday = now.day
+
+dnr = yday(nyear, nmonth, nday)
+print("Day of the year = %.1f \n" % dnr)
 
 # Print the common data only once
 latitude = 48.1482; longitude = 17.1067; tzone = 1.0
 
 print("Latitude %.2f degrees, longitude %.2f degrees" % (latitude, longitude))
-print("Local offset %.1f hours" % tzone)
+print("Local offset %.1f hours\n-------\n" % tzone)
 
 print "1. SUNRISE"
-suncalc(year, month, day, "SUNRISE", latitude, longitude, tzone, znt_official)
+suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_official)
 
 print "\n2. CIVIL TWILIGHT"
-suncalc(year, month, day, "SUNRISE", latitude, longitude, tzone, znt_civil)
+suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_civil)
 
 print "\n3. NAUTICAL TWILIGHT"
-suncalc(year, month, day, "SUNRISE", latitude, longitude, tzone, znt_nautical)
+suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_nautical)
 
 print "\n4. ASTRONOMICAL TWILIGHT"
-suncalc(year, month, day, "SUNRISE", latitude, longitude, tzone, znt_astronomical)
+suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_astronomical)
 
 print "\n-------\n"
 
 print "1. SUNSET"
-suncalc(year, month, day, "SUNSET", 48.1482, 17.1067, 1.0, znt_official)
+suncalc(nyear, nmonth, nday, "SUNSET", latitude, longitude, tzone, znt_official)
 
 print "\n2. CIVIL TWILIGHT"
-suncalc(year, month, day, "SUNSET", 48.1482, 17.1067, 1.0, znt_civil)
+suncalc(nyear, nmonth, nday, "SUNSET", latitude, longitude, tzone, znt_civil)
 
