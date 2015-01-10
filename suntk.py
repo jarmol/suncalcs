@@ -117,19 +117,11 @@ root = Tk()
 root.geometry("350x300+200+200")
 root.title("Suncalculator")
 
-frame1 = Frame(root).place(rely=0, relheight=0.1, relwidth=1)
-frame2 = Frame(root).place(rely=0.1, relheight=0.1, relwidth=1)
-frame3 = Frame(root).place(rely=0.2, relheight=0.1, relwidth=1)
-frame4 = Frame(root).place(rely=0.3, relheight=0.1, relwidth=1)
-frame5 = Frame(root).place(rely=0.4, relheight=0.1, relwidth=1)
-frame6 = Frame(root).place(rely=0.5, relheight=0.1, relwidth=1)
-
-Label(frame1, text="Latitude", fg="red").place(relx=0, rely=0, relwidth=0.25)		# Latitude
-Label(frame2, text="Longitude", fg="red").place(relx=0, rely=0.1, relwidth=0.25)	# Longitude
-Label(frame3, text="Timezone", fg="red").place(relx=0, rely=0.2, relwidth=0.25)		# Timezone
-Label(frame4, text="Current time", fg="red").place(relx=0, rely=0.3, relwidth=0.25)	# Local time
-Label(frame5, text="Sunrise time", fg="red").place(relx=0, rely=0.4, relwidth=0.25)		# Sunrise time official
-Label(frame6, text="Sunset time", fg="red").place(relx=0, rely=0.5, relwidth=0.25)		# Sunset time
+Label(root, text="Latitude", fg="red").place(relx=0, rely=0)		# Latitude
+Label(root, text="Longitude, TZ", fg="red").place(relx=0, rely=0.1)	# Longitude & TZ
+Label(root, text="Current time", fg="red").place(relx=0, rely=0.2)	# Local time
+Label(root, text="Sunrise time", fg="red").place(relx=0, rely=0.3)	# Sunrise time official
+Label(root, text="Sunset time", fg="red").place(relx=0, rely=0.4)	# Sunset time
 
 now = datetime.datetime.now()
 nyear = now.year
@@ -140,30 +132,30 @@ latitude = 60.18; longitude = 24.93; tzone = 2.0
 
 content = StringVar()
 content.set("%.2f" % latitude)
-e1 = Entry(frame1, textvariable=content).place(relx=0.3, rely=0)
+e1 = Entry(root, textvariable=content).place(relx=0.3, rely=0)
 
 content2 = StringVar()
 content2.set("%.2f" % longitude)
-e2 = Entry(frame2, textvariable=content2).place(relx=0.3, rely=0.1)
+e2 = Entry(root, textvariable=content2).place(relx=0.3, rely=0.1)
 
 content3 = StringVar()
 content3.set("%.1f" % tzone)
-e3 = Entry(frame3, textvariable=content3).place(relx=0.3, rely=0.2)
+e3 = Entry(root, textvariable=content3).place(relx=0.75, rely=0.1, relwidth=0.2)
 
 content4 = StringVar()
 s4 = time.strftime("%d.%m.%Y %T", time.localtime())
 content4.set(s4)
-e4 = Entry(frame4, textvariable=content4).place(relx=0.3, rely=0.3)
+e4 = Entry(root, textvariable=content4).place(relx=0.3, rely=0.2)
 
 content5 = StringVar()
 s5 = suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_official)
 content5.set(s5)
-e5 = Entry(frame5, textvariable=content5).place(relx=0.3, rely=0.4)
+e5 = Entry(root, textvariable=content5).place(relx=0.3, rely=0.3)
 
 content6 = StringVar()
 s6 = suncalc(nyear, nmonth, nday, "SUNSET", latitude, longitude, tzone, znt_official)
 content6.set(s6)
-e6 = Entry(frame5, textvariable=content6).place(relx=0.3, rely=0.5)
+e6 = Entry(root, textvariable=content6).place(relx=0.3, rely=0.4)
 
 #button1 = Button(root, text="C -> F", command=yday(nyear, nmonth, nday)).pack(side=BOTTOM)
 
