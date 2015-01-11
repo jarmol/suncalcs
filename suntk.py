@@ -1,7 +1,10 @@
 from Tkinter import *
 import datetime, time, math
+from time import gmtime, strftime
+
 znt_official = 90.833
 d2r = math.pi/180.0
+dLT = [0.0, 0.0, 0.0]
 
 def yday(year, month, day):
     print("Date: %d-%d-%d" % (year, month, day))
@@ -69,7 +72,7 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     sinDec = 0.39782 * math.sin(d2r*L)
     cosDec = math.cos(math.asin(sinDec))
     declin = math.atan(sinDec/cosDec)/d2r
-#    ldt[2] = declin     # Save declination 
+    dLT[2] = declin     # Save declination 
 
 # 7a. calculate the Sun's local hour angle
     latitude = d2r*lat1
@@ -105,7 +108,11 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
 
 # 10. convert UT value to local time zone of latitude/longitude
     localT = UT + localOffset
-    
+    if (suncalctype == "SUNRISE"):
+        dLT[0] = localT   
+    else:
+        dLT[1] = localT
+ 
 #    return ("%s local time %s" % (prtx, human(localT)))
     return human(localT)
 
@@ -122,6 +129,9 @@ Label(root, text="Longitude, TZ", fg="red").place(relx=0, rely=0.1)	# Longitude 
 Label(root, text="Current time", fg="red").place(relx=0, rely=0.2)	# Local time
 Label(root, text="Sunrise time", fg="red").place(relx=0, rely=0.3)	# Sunrise time official
 Label(root, text="Sunset time", fg="red").place(relx=0, rely=0.4)	# Sunset time
+Label(root, text="Daylength", fg="red").place(relx=0, rely=0.5)		# Daylength
+Label(root, text="Noon time", fg="red").place(relx=0, rely=0.6)		# Noontime
+Label(root, text="Sun elevation", fg="red").place(relx=0, rely=0.7)	# Noontime
 
 now = datetime.datetime.now()
 nyear = now.year
@@ -156,6 +166,24 @@ content6 = StringVar()
 s6 = suncalc(nyear, nmonth, nday, "SUNSET", latitude, longitude, tzone, znt_official)
 content6.set(s6)
 e6 = Entry(root, textvariable=content6).place(relx=0.3, rely=0.4)
+
+# daylength, noontime and elevation
+deltas = (dLT[1] - dLT[0])
+#print dLT[0], dLT[1], human(deltas)
+isnoont = dLT[0] + 0.5*deltas
+iselevation = ("%.2f deg" % (90 - latitude + dLT[2]))
+
+content7 = StringVar()
+content7.set(human(deltas))
+e7 = Entry(root, textvariable=content7).place(relx=0.3, rely=0.5)
+
+content8 = StringVar()
+content8.set(human(isnoont))
+e8 = Entry(root, textvariable=content8).place(relx=0.3, rely=0.6)
+
+content9 = StringVar()
+content9.set(iselevation)
+e9 = Entry(root, textvariable=content9).place(relx=0.3, rely=0.7)
 
 #button1 = Button(root, text="C -> F", command=yday(nyear, nmonth, nday)).pack(side=BOTTOM)
 
