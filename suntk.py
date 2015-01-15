@@ -113,10 +113,16 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
         
 # 10. convert UT value to local time zone of latitude/longitude
     localT = UT + localOffset
+
     if (suncalctype == "SUNRISE"):
         dLT[0] = localT   
     else:
         dLT[1] = localT
+
+# If no sunrise it will give for sunrise and sunset the same times at noon plus daylength 0
+    if ((H > 23.999) or (H < 0.001)):
+        dLT[1] = dLT[0]
+        localT = dLT[0]
  
     return human(localT)
 
