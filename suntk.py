@@ -2,6 +2,7 @@ from Tkinter import *
 import datetime, time, math
 import tkMessageBox
 from time import gmtime, strftime
+from datetime import date
 
 znt_official = 90.833
 dLT = [0.0, 0.0, 0.0]
@@ -130,8 +131,6 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
 
 
 def ButtonClicked():
-    s4 = time.strftime("%d.%m.%Y %T", time.localtime())
-    content4.set(s4)
     s1 = E1.get()
     s2 = E2.get()
     s3 = E3.get()
@@ -166,7 +165,7 @@ root.title("Suncalculator")
 
 Label(root, text="Latitude", fg="red").place(relx=0, rely=0)		# Latitude
 Label(root, text="Longitude, TZ", fg="red").place(relx=0, rely=0.1)	# Longitude & TZ
-Label(root, text="Current time", fg="red").place(relx=0, rely=0.2)	# Local time
+Label(root, text="Current date", fg="red").place(relx=0, rely=0.2)	# current date
 Label(root, text="Sunrise time", fg="red").place(relx=0, rely=0.3)	# Sunrise time official
 Label(root, text="Sunset time", fg="red").place(relx=0, rely=0.4)	# Sunset time
 Label(root, text="Daylength", fg="red").place(relx=0, rely=0.5)		# Daylength
@@ -196,8 +195,9 @@ E3 = Entry(root, textvariable=content3)
 E3.place(relx=0.75, rely=0.1, relwidth=0.2)
 
 content4 = StringVar()
-s4 = time.strftime("%d.%m.%Y %T", time.localtime())
-
+# s4 = time.strftime("%d.%m.%Y %T", time.localtime())
+nyt = date.today()
+s4 = nyt.isoformat()
 content4.set(s4)
 E4 = Entry(root, textvariable=content4)
 E4.place(relx=0.3, rely=0.2)
