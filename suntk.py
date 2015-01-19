@@ -172,15 +172,15 @@ root = Tk()
 root.geometry("350x300+200+200")
 root.title("Suncalculator")
 
-Label(root, text="Latitude", fg="red").place(relx=0, rely=0)		# Latitude
-Label(root, text="Longitude, TZ", fg="red").place(relx=0, rely=0.1)	# Longitude & TZ
-Label(root, text="Current date", fg="red").place(relx=0, rely=0.2)	# current date
-Label(root, text="Sunrise time", fg="red").place(relx=0, rely=0.3)	# Sunrise time official
-Label(root, text="Sunset time", fg="red").place(relx=0, rely=0.4)	# Sunset time
-Label(root, text="Daylength", fg="red").place(relx=0, rely=0.5)		# Daylength
-Label(root, text="Noon time", fg="red").place(relx=0, rely=0.6)		# Noontime
-Label(root, text="Sun elevation", fg="red").place(relx=0, rely=0.7)	# Sun elevation
-Label(root, text="Calculation date", fg="red").place(relx=0, rely=0.8)		# Calculation date
+Label(root, text="Latitude", fg="red").grid(row=0, column=0)		# Latitude
+Label(root, text="Longitude, TZ", fg="red").grid(row=1, column=0)	# Longitude & TZ
+Label(root, text="Current date", fg="red").grid(row=2, column=0)	# current date
+Label(root, text="Sunrise time", fg="red").grid(row=3, column=0)	# Sunrise time official
+Label(root, text="Sunset time ", fg="red").grid(row=4, column=0)	# Sunset time
+Label(root, text="Daylength   ", fg="red").grid(row=5, column=0)	# Daylength
+Label(root, text="Noon time   ", fg="red").grid(row=6, column=0)	# Noontime
+Label(root, text="Sun elevation", fg="red").grid(row=7, column=0)	# Sun elevation
+Label(root, text="Calculation date", fg="red").grid(row=8, column=0)	# Calculation date
 
 now = datetime.datetime.now()
 nyear = now.year
@@ -191,35 +191,37 @@ latitude = 60.18; longitude = 24.93; tzone = 2.0
 
 content = StringVar()
 content.set("%.2f" % latitude)
-E1 = Entry(root, textvariable=content)
-E1.place(relx=0.3, rely=0)
+E1 = Entry(root, textvariable=content, width=10)
+E1.grid(row=0, column=1)
 
 content2 = StringVar()
 content2.set("%.2f" % longitude)
-E2 = Entry(root, textvariable=content2)
-E2.place(relx=0.3, rely=0.1)
+E2 = Entry(root, textvariable=content2, width=10)
+E2.grid(row=1, column=1)
 
 content3 = StringVar()
 content3.set("%.1f" % tzone)
-E3 = Entry(root, textvariable=content3)
-E3.place(relx=0.75, rely=0.1, relwidth=0.2)
+E3 = Entry(root, textvariable=content3, width=5)
+E3.grid(row=1, column=2)
 
 content4 = StringVar()
 nyt = date.today()
 s4 = nyt.isoformat()
 content4.set(s4)
-E4 = Entry(root, textvariable=content4)
-E4.place(relx=0.3, rely=0.2)
+E4 = Entry(root, textvariable=content4, width=10)
+E4.grid(row=2, column=1)
 
 content5 = StringVar()
 s5 = suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_official)
 content5.set(s5)
-e5 = Entry(root, textvariable=content5).place(relx=0.3, rely=0.3)
+e5 = Entry(root, textvariable=content5, width=10)
+e5.grid(row=3, column=1)
 
 content6 = StringVar()
 s6 = suncalc(nyear, nmonth, nday, "SUNSET", latitude, longitude, tzone, znt_official)
 content6.set(s6)
-e6 = Entry(root, textvariable=content6).place(relx=0.3, rely=0.4)
+e6 = Entry(root, textvariable=content6, width=10)
+e6.grid(row=4, column=1)
 
 # daylength, noontime and elevation
 deltas = (dLT[1] - dLT[0])
@@ -227,29 +229,36 @@ isnoont = dLT[0] + 0.5*deltas
 iselevation = ("%.2f deg" % (90 - latitude + dLT[2]))
 
 content7 = StringVar()
-e7 = Entry(root, textvariable=content7).place(relx=0.3, rely=0.5)
+e7 = Entry(root, textvariable=content7, width=10)
+e7.grid(row=5, column=1)
 
 content8 = StringVar()
-e8 = Entry(root, textvariable=content8).place(relx=0.3, rely=0.6)
+e8 = Entry(root, textvariable=content8, width=10)
+e8.grid(row=6, column=1)
 
 content9 = StringVar()
-e9 = Entry(root, textvariable=content9).place(relx=0.3, rely=0.7)
+e9 = Entry(root, textvariable=content9, width=10)
+e9.grid(row=7, column=1)
 
 content10 = StringVar()
 s10 = ("%d" % nyear)
 content10.set(s10)
-e10 = Entry(root, textvariable=content10).place(relx=0.3, rely=0.8, relwidth=0.15)
+e10 = Entry(root, textvariable=content10, width=6)
+e10.grid(row=8, column=1)
 
 content11 = StringVar()
 s11 = ("%d" % nmonth)
 content11.set(s11)
-e11 = Entry(root, textvariable=content11).place(relx=0.45, rely=0.8, relwidth=0.10)
+e11 = Entry(root, textvariable=content11, width=4)
+e11.grid(row=8, column=2)
 
 content12 = StringVar()
 s12 = ("%d" % nday)
 content12.set(s12)
-e12 = Entry(root, textvariable=content12).place(relx=0.55, rely=0.8, relwidth=0.10)
+e12 = Entry(root, textvariable=content12, width=4)
+e12.grid(row=8, column=3)
 
-button1 = Button(root, text="Calculate", command=ButtonClicked).pack(side=BOTTOM)
+button1 = Button(root, text="Calculate", command=ButtonClicked)
+button1.grid(row=10, column=1)
 
 root.mainloop()
