@@ -135,13 +135,21 @@ def ButtonClicked():
     s2 = E2.get()
     s3 = E3.get()
 
-    now = datetime.datetime.now()
-    nyear = now.year
-    nmonth = now.month
-    nday = now.day
+    s10 = content10.get()
+    nyear = int(s10)
+
+    s11 = content11.get()
+    nmonth = int(s11)
+
+    s12 = content12.get()
+    nday = int(s12)
+    
     latitude  = float(s1)
     longitude = float(s2)
     tzone     = float(s3)
+
+    s4 = ("%d-%d-%d" % (nyear, nmonth, nday))
+    content4.set(s4)
 
     s5 = suncalc(nyear, nmonth, nday, "SUNRISE", latitude, longitude, tzone, znt_official)
     content5.set(s5)
@@ -157,6 +165,7 @@ def ButtonClicked():
     iselevation = ("%.2f deg" % (90 - latitude + dLT[2]))
     content9.set(iselevation)
 
+
 # Main Begin
 root = Tk()
 
@@ -171,6 +180,7 @@ Label(root, text="Sunset time", fg="red").place(relx=0, rely=0.4)	# Sunset time
 Label(root, text="Daylength", fg="red").place(relx=0, rely=0.5)		# Daylength
 Label(root, text="Noon time", fg="red").place(relx=0, rely=0.6)		# Noontime
 Label(root, text="Sun elevation", fg="red").place(relx=0, rely=0.7)	# Sun elevation
+Label(root, text="Calculation date", fg="red").place(relx=0, rely=0.8)		# Calculation date
 
 now = datetime.datetime.now()
 nyear = now.year
@@ -195,7 +205,6 @@ E3 = Entry(root, textvariable=content3)
 E3.place(relx=0.75, rely=0.1, relwidth=0.2)
 
 content4 = StringVar()
-# s4 = time.strftime("%d.%m.%Y %T", time.localtime())
 nyt = date.today()
 s4 = nyt.isoformat()
 content4.set(s4)
@@ -218,16 +227,29 @@ isnoont = dLT[0] + 0.5*deltas
 iselevation = ("%.2f deg" % (90 - latitude + dLT[2]))
 
 content7 = StringVar()
-#content7.set(human(deltas))
 e7 = Entry(root, textvariable=content7).place(relx=0.3, rely=0.5)
 
 content8 = StringVar()
-#content8.set(human(isnoont))
 e8 = Entry(root, textvariable=content8).place(relx=0.3, rely=0.6)
 
 content9 = StringVar()
-# content9.set(iselevation)
 e9 = Entry(root, textvariable=content9).place(relx=0.3, rely=0.7)
 
+content10 = StringVar()
+s10 = ("%d" % nyear)
+content10.set(s10)
+e10 = Entry(root, textvariable=content10).place(relx=0.3, rely=0.8, relwidth=0.15)
+
+content11 = StringVar()
+s11 = ("%d" % nmonth)
+content11.set(s11)
+e11 = Entry(root, textvariable=content11).place(relx=0.45, rely=0.8, relwidth=0.10)
+
+content12 = StringVar()
+s12 = ("%d" % nday)
+content12.set(s12)
+e12 = Entry(root, textvariable=content12).place(relx=0.55, rely=0.8, relwidth=0.10)
+
 button1 = Button(root, text="Calculate", command=ButtonClicked).pack(side=BOTTOM)
+
 root.mainloop()
