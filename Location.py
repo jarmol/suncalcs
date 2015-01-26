@@ -69,9 +69,6 @@ class Dates(object):
     def printdate(self):
         print("%d.%d.%d\n" % (self.Day, self.Month, self.Year))
 
-    def printtime(self):
-        print "Test within Dates object", human(16.075)
-
 def human(decimhours):
 # This function converts floating hours to formatted time hh:mm:ss
 # Not embedded to any object
@@ -84,13 +81,16 @@ class Solar(object):
 
 # Solar calculations
 
-    def __init__(self, daynr=0, latitude=0.0, longitude=0.0, whichway="SUNRISE", zenith=znt_official):
+    def __init__(self, daynr=0, latitude=0.0, longitude=0.0, whichway="SUNRISE", zenith=znt_official, timezone=0):
         self.Daynr = daynr
         self.Latitude = latitude
         self.Longitude = longitude
         self.Whichway  = whichway
         self.Zenith    = zenith
+        self.Timezone = timezone
         self.Declination = 0.0
+        self.RiseLT = 0.0
+        self.SetLT  = 0.0
 
     def getsolar(self):
         print("%s at daynr %d for zenith %.2f\n" % (self.Whichway, self.Daynr, self.Zenith))
@@ -110,7 +110,7 @@ class Solar(object):
 #  4. calculate the Sun's true longitude
         L = M + (1.916*sind(M)) + 0.020*sind(2*M) + 282.634
 
-#  NOTE: L potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
+#  NOTE: L needs to be adjusted into the range [0,360) by adding/subtracting 360
  
         if (L > 360.0):
             L-= 360.0
@@ -121,7 +121,7 @@ class Solar(object):
         RA = math.atan(0.91764*tand(L))
         RA = degr(RA)
 
-#  NOTE: RA potentially needs to be adjusted into the range [0,360) by adding/subtracting 360
+#  NOTE: RA needs to be adjusted into the range [0,360) by adding/subtracting 360
         if (RA > 360.0):
             RA-= 360.0
         elif (RA < -360.0):
@@ -140,3 +140,52 @@ class Solar(object):
         cosDec = math.cos(math.asin(sinDec))
         declin = degr(math.atan(sinDec/cosDec))
         self.Declination = declin     # Save declination
+
+# 7a. calculate the Sun's local hour angle
+
+        cosH = (cosd(self.Zenith) - (sinDec*sind(self.Latitude)))/(cosDec*cosd(self.Latitude))
+        if (cosH > 1):
+            cosH = 1.0    # errors prohibited
+            print "the sun never rises on this location!\n"
+
+        if (cosH < -1):
+            cosH = -1.0     # this will prevent error
+            print "Sun will not set!"
+
+#  7b. finish calculating H and convert into hours   
+        H = degr(math.acos(cosH)) # converted to degrees
+
+#  if rising time is desired:
+        if (self.Whichway == "SUNRISE" ):
+            H = 360 - H
+
+            prtx = "Sunrise"
+        else:
+            prtx = "Sunset" 
+
+#  degrees to hours:
+        H = H/15.0
+
+#  8. calculate local mean time of rising/setting
+        T = H + RA - (0.06571*t) - 6.622
+
+#  9. adjust back to UTC
+        UT = (T - lngHour) % 24
+        
+# 10. convert UT value to local time zone of latitude/longitude
+        localT = UT + self.Timezone
+
+        if (self.Whichway == "SUNRISE"):
+            self.RiseLT = localT   
+        else:
+            self.SetLT = localT
+
+# If no sunrise it will give for sunrise and sunset the same times at noon plus daylength 0
+        if ((H > 23.999) or (H < 0.001)):
+            self.SetLT = self.RiseLT
+            localT = self.RiseLT
+ 
+        return human(localT)
+
+# end of suncalc()
+
