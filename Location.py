@@ -66,8 +66,8 @@ class Dates(object):
         ydN = N1 - (N2 * N3) + self.Day - 30
         return ydN
 
-    def printdate(self):
-        print("%d.%d.%d\n" % (self.Day, self.Month, self.Year))
+    def getdate(self):
+        return ("%d.%d.%d" % (self.Day, self.Month, self.Year))
 
 def human(decimhours):
 # This function converts floating hours to formatted time hh:mm:ss
@@ -80,14 +80,14 @@ def human(decimhours):
 class Solar(object):
 
 # Solar calculations
-
-    def __init__(self, daynr=0, latitude=0.0, longitude=0.0, whichway="SUNRISE", zenith=znt_official, timezone=0):
+# Note, shortened list of arguments as the object argument p of class Location is used
+    def __init__(self, daynr, p, whichway="SUNRISE", zenith=znt_official):
         self.Daynr = daynr
-        self.Latitude = latitude
-        self.Longitude = longitude
+        self.Latitude =  p.Latitude
+        self.Longitude = p.Longitude
         self.Whichway  = whichway
         self.Zenith    = zenith
-        self.Timezone = timezone
+        self.Timezone =  p.Timezone
         self.Declination = 0.0
         self.RiseLT = 0.0
         self.SetLT  = 0.0
@@ -95,8 +95,8 @@ class Solar(object):
     def getsolar(self):
         print("%s at daynr %d for zenith %.2f\n" % (self.Whichway, self.Daynr, self.Zenith))
 
-    def suncalc(self):
 #  2. convert the longitude to hour value and calculate an approximate time
+    def suncalc(self):
         lngHour = self.Longitude/15.0 
 
         if (self.Whichway == "SUNRISE"):
