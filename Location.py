@@ -56,8 +56,7 @@ class Dates(object):
     def __init__(self, year, month, day):
         self.Year = year
         self.Month = month
-        self.Day = day
- 
+        self.Day = day 
 
     def yday(self):
         N1 = math.floor(275*self.Month/9)
@@ -68,14 +67,6 @@ class Dates(object):
 
     def getdate(self):
         return ("%d.%d.%d" % (self.Day, self.Month, self.Year))
-
-def human(decimhours):
-# This function converts floating hours to formatted time hh:mm:ss
-# Not embedded to any object
-    h=decimhours        # floating hours
-    s = 3600*h          # seconds
-    ts = time.strftime('%H:%M:%S', time.gmtime(s))
-    return ts
 
 class Solar(object):
 
@@ -89,7 +80,7 @@ class Solar(object):
         self.Zenith    = zenith
         self.Timezone =  p.Timezone
         self.Declination = 0.0
-        self.RiseLT = 0.0
+        self.RiseLT = 24.0
         self.SetLT  = 0.0
 
     def getsolar(self):
@@ -99,10 +90,10 @@ class Solar(object):
     def suncalc(self):
         lngHour = self.Longitude/15.0 
 
-        if (self.Whichway == "SUNRISE"):
-            t = self.Daynr + (6.0 - lngHour)/24.0
-        else:
-            t = self.Daynr + (18.0 - lngHour)/24.0
+        cond1 =(self.Whichway == "SUNRISE")
+        t1 = self.Daynr + (6.0 - lngHour)/24.0
+        t2 = t1 + 0.5
+        t =  chif(cond1, t1, t2)
 
 #  3. calculate the Sun's mean anomaly
         M = 0.9856*t - 3.289
@@ -110,7 +101,7 @@ class Solar(object):
 #  4. calculate the Sun's true longitude
         L = M + (1.916*sind(M)) + 0.020*sind(2*M) + 282.634
 
-#  NOTE: L needs to be adjusted into the range [0,360) by adding/subtracting 360
+#  NOTE: L needs to be adjusted into the range [-360,360]
  
         if (L > 360.0):
             L-= 360.0
@@ -121,7 +112,7 @@ class Solar(object):
         RA = math.atan(0.91764*tand(L))
         RA = degr(RA)
 
-#  NOTE: RA needs to be adjusted into the range [0,360) by adding/subtracting 360
+#  NOTE: RA needs to be adjusted into the range [-360,360]
         if (RA > 360.0):
             RA-= 360.0
         elif (RA < -360.0):
@@ -176,7 +167,7 @@ class Solar(object):
         localT = UT + self.Timezone
 
         if (self.Whichway == "SUNRISE"):
-            self.RiseLT = localT   
+            self.RiseLT = localT
         else:
             self.SetLT = localT
 
@@ -189,3 +180,38 @@ class Solar(object):
 
 # end of suncalc()
 
+def human(decimhours):
+# This function converts floating hours to formatted time hh:mm:ss
+# Not embedded to any object
+    h=decimhours        # floating hours
+    s = 3600*h          # seconds
+    ts = time.strftime('%H:%M:%S', time.gmtime(s))
+    return ts
+
+#def daylen(d1, d2):
+#    dlhs = d2 - d1
+#    return human(dlhs)
+
+def daylen(pt1, pt2):
+    d1 = pt1.RiseLT
+    d2 = pt2.SetLT
+    dlhs = d2 - d1
+    return human(dlhs)
+
+def noonts(pt1, pt2):
+    d1 = pt1.RiseLT
+    d2 = pt2.SetLT
+    tnoon = human(d1 + 0.5*(d2 - d1))
+    return tnoon 
+
+def delivery(ps1, ps2):
+    s1 = ps1.suncalc()
+    s2 = ps2.suncalc()
+
+    delta = daylen(ps1, ps2)
+    tnoon = noonts(ps1, ps2)
+
+    print ("Sunrise:   %s" % s1)
+    print ("Sunset:    %s" % s2)
+    print ("Noon time: %s" % tnoon)
+    print ("Daylength: %s\n---------\n" % delta)
