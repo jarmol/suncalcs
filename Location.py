@@ -188,10 +188,6 @@ def human(decimhours):
     ts = time.strftime('%H:%M:%S', time.gmtime(s))
     return ts
 
-#def daylen(d1, d2):
-#    dlhs = d2 - d1
-#    return human(dlhs)
-
 def daylen(pt1, pt2):
     d1 = pt1.RiseLT
     d2 = pt2.SetLT
@@ -204,7 +200,7 @@ def noonts(pt1, pt2):
     tnoon = human(d1 + 0.5*(d2 - d1))
     return tnoon 
 
-def delivery(ps1, ps2):
+def delivery(ps1, ps2, pl1):
     s1 = ps1.suncalc()
     s2 = ps2.suncalc()
 
@@ -214,4 +210,16 @@ def delivery(ps1, ps2):
     print ("Sunrise:   %s" % s1)
     print ("Sunset:    %s" % s2)
     print ("Noon time: %s" % tnoon)
-    print ("Daylength: %s\n---------\n" % delta)
+    print ("Daylength: %s" % delta)
+    avgdecl = getdeclination(ps1, ps2)
+    maxht = getmaxelevation(pl1, avgdecl)
+    print ("Max elevation: %.2f degrees\n---------\n" % maxht)
+
+def getdeclination(ps1, ps2):
+    decl1 = ps1.Declination # by sunrise
+    decl2 = ps2.Declination # by sunset
+    return 0.5*(decl1 + decl2) # by noon
+
+def getmaxelevation(loc1, meandecl):
+    elev = 90 + meandecl - loc1.Latitude
+    return elev
