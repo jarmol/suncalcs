@@ -18,10 +18,6 @@ sol1b = Solar(dnr, p1, "SET", znt_official)
 
 delivery(sol1a, sol1b, p1)
 
-#avgdecl = getdeclination(sol1a, sol1b)
-#maxht = getmaxelevation(p1, avgdecl)
-#print ("Max elevation %.2f degrees" % maxht)
-
 p2 = Location("Oulu", 65.02, 25.47, 2)
 p2.printrecord()
 
