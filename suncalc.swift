@@ -192,9 +192,11 @@ func doCalc() -> Double {
 
 //  9. adjust back to UTC
      var UT = (T - lngHour) % 24
-     if (UT < 0.0) { UT += 24.0 } // correct negative times since March equinox
+     if (UT < 0.0) { UT += 24.0 } // correct negative utc times since March equinox
      var localTime = UT + self.Timezone
 //     println("UT = \(dechrtohrmns(UT))")
+     if (localTime < 0.0) { localTime += 24.0 } // correct negative local times of western locations
+
      println("Local " + prtx + " = \(dechrtohrmns(localTime))")
 // test decimal UT
 //     println(String(format: "UT = " + fs + prtx, UT))
@@ -203,11 +205,13 @@ func doCalc() -> Double {
 }   
 
 func showMore(ut1: Double, ut2: Double, decl1: Double, decl2: Double, p: Location) {
-    var noonTime = 0.5*(ut1 + ut2) + p.timeZone
     var dayLength = ut2 - ut1
     var mdecl = 0.5*(decl1 + decl2)
     var maxelev = 90 - p.latitude + mdecl
- 
+
+    if (dayLength < 0.0) { dayLength += 24.0 } // correct negative day length
+    var noonTime = ut1 + 0.5*dayLength + p.timeZone
+
     println("Noon time: \(dechrtohrmns(noonTime))")
     println(String(format: "Maxim sun elevation: %.2f", maxelev))
     println("Day length: \(dechrtohrmns(dayLength))")
@@ -236,5 +240,11 @@ UT2 = oulsun.doCalc()
 decl2 = oulsun.Declination
 showMore(UT1, UT2, decl1, decl2, p2)
 
-let vancsun = Solar(daynr:daynr, p:p3, whichway:"SUNRISE", zenith:znt_official)
-vancsun.doCalc()
+var vancsun = Solar(daynr:daynr, p:p3, whichway:"SUNRISE", zenith:znt_official)
+UT1 = vancsun.doCalc()
+decl1 = vancsun.Declination
+
+vancsun = Solar(daynr:daynr, p:p3, whichway:"SUNSET", zenith:znt_official)
+UT2 = vancsun.doCalc()
+decl2 = vancsun.Declination
+showMore(UT1, UT2, decl1, decl2, p3)
