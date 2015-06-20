@@ -26,27 +26,31 @@ p1.printrecord()
 
 sol1a = Solar(dnr, p1, "SUNRISE", znt_official)
 sol1b = Solar(dnr, p1, "SET", znt_official)
-
 delivery(sol1a, sol1b, p1)
+
+print("Declination %.2f degrees at sunrise" % sol1a.Declination)
+meandecl = getdeclination(sol1a, sol1b)
+print("Declination %.2f degrees at noon" % meandecl)
+print("Declination %.2f degrees at sunset" % sol1b.Declination)
+print("-----------\n")
 
 p2 = Location("Oulu", 65.02, 25.47, 2)
 p2.printrecord()
 
 sol2a = Solar(dnr, p2, "SUNRISE", znt_official)
 sol2b = Solar(dnr, p2, "SET", znt_official)
-
 delivery(sol2a, sol2b, p2)
+
+meandecl = getdeclination(sol2a, sol2b)
+print("Declination %.2f degrees at noon" % meandecl)
+print("-----------\n")
 
 p3 = Location("Vancouver B.C.", 49.217, -123.1, -8)
 p3.printrecord()	# Vancouver
 
 sol3a = Solar(dnr, p3, "SUNRISE", znt_official)
 sol3b = Solar(dnr, p3, "SET", znt_official)
-
 delivery(sol3a, sol3b, p3)
 
-print("Declination %.2f degrees at sunrise" % sol1a.Declination)
-print("Declination %.2f degrees at sunset" % sol1b.Declination)
-
-meandecl = getdeclination(sol1a, sol1b)
+meandecl = getdeclination(sol3a, sol3b)
 print("Declination %.2f degrees at noon" % meandecl)
