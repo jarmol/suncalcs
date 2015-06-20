@@ -198,6 +198,9 @@ def noonts(pt1, pt2):
     d1 = pt1.RiseLT
     d2 = pt2.SetLT
     tnoon = human(d1 + 0.5*(d2 - d1))
+    if d1 > d2 :
+        tnoon = human(d1 + 0.5*(d2 - d1) + 12)
+
     return tnoon 
 
 def delivery(ps1, ps2, pl1):
