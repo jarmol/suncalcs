@@ -124,7 +124,9 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith, pfla
         print "the sun never rises on this location (on the specified date.\n"
 
     if (cosH < -1):
-        print "the sun never sets on this location (on the specified date)\n"
+# avoid mathematical errors
+        cosH = -1
+        print "the sun never sets on this location (on the specified zenith)\n"
 
 #  7b. finish calculating H and convert into hours
 
