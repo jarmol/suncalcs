@@ -161,21 +161,23 @@ class Solar(object):
         T = H + RA - (0.06571*t) - 6.622
 
 #  9. adjust back to UTC
-        UT = (T - lngHour) % 24
-        
+        UT = (T - lngHour)
 # 10. convert UT value to local time zone of latitude/longitude
         localT = UT + self.Timezone
-
         if (self.Whichway == "SUNRISE"):
             self.RiseLT = localT
         else:
             self.SetLT = localT
 
 # If no sunrise it will give for sunrise and sunset the same times at noon plus daylength 0
-        if ((H > 23.999) or (H < 0.001)):
+        if (H < 0.001):
             self.SetLT = self.RiseLT
             localT = self.RiseLT
- 
+
+        if (H > 23.999):
+            self.SetLT = self.RiseLT + H
+            localT = self.SetLT
+
         return human(localT)
 
 # end of suncalc()
@@ -190,15 +192,28 @@ def human(decimhours):
 
 def daylen(pt1, pt2):
     d1 = pt1.RiseLT
-    d2 = pt2.SetLT
+    d2 = pt2.SetLT 
     dlhs = d2 - d1
-    return human(dlhs)
+
+    if (d1 < 2) & (d2 < 2) & (d2 > 0):
+       return "24:00"
+
+    if dlhs > 24:
+       dlhs = 24.00
+       return "24:00:00"
+    else: 
+       return human(dlhs)
+
 
 def noonts(pt1, pt2):
-    d1 = pt1.RiseLT
-    d2 = pt2.SetLT
+    d1 = pt1.RiseLT % 24
+    d2 = pt2.SetLT 
     tnoon = human(d1 + 0.5*(d2 - d1))
+
     if d1 > d2 :
+        tnoon = human(d1 + 0.5*(d2 - d1) + 12)
+
+    if (d1 < 6) & (d2 < 6):
         tnoon = human(d1 + 0.5*(d2 - d1) + 12)
 
     return tnoon 
@@ -216,7 +231,7 @@ def delivery(ps1, ps2, pl1):
     print ("Daylength: %s" % delta)
     avgdecl = getdeclination(ps1, ps2)
     maxht = getmaxelevation(pl1, avgdecl)
-    print ("Max elevation: %.2f degrees\n---------\n" % maxht)
+    print ("Max elevation: %.2f degrees" % maxht)
 
 def getdeclination(ps1, ps2):
     decl1 = ps1.Declination # by sunrise
