@@ -18,6 +18,27 @@ def chif(cval, yval, nval):
 
     return rval
 
+def getTable(fileName):
+   myData = open(fileName, "rb")
+   print "File: ", fileName
+   if myData.closed:
+      print "not open!"
+      exit(-2)
+   else:
+      print "open in mode ", myData.mode
+
+   yourTable = myData.read().split('\n')
+   myData.close()
+   return yourTable
+
+def getRowdata(cityRow):
+   cityList = cityRow.split(' ')
+   city = cityList[0]
+   latitude = float(cityList[1])
+   longitude = float(cityList[2])
+   timeZone = float(cityList[3])
+   return city, latitude, longitude, timeZone
+
 class Location(object):
 
 # Geographic locations

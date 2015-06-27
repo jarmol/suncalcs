@@ -21,27 +21,11 @@ else:
     sd =  d1.getdate()
     print("\nDate %s (Day number %d) \n" % (sd, dnr))
 
-myData = open("locationData.txt", "rb")
-print "File: ", myData.name
-if myData.closed:
-   print "not open!"
-   exit(-2)
-else:
-   print "open mode ", myData.mode
- 
-cityTable = myData.read().split('\n')
-myData.close()
-
+cityTable = getTable("locationData.txt")
 nr = len(cityTable) - 1 # Number of cities
 
 for i in range(0, nr):
-   cityRow = cityTable[i]
-   cityList = cityRow.split(' ')
-   city = cityList[0]
-   latitude = float(cityList[1])
-   longitude = float(cityList[2])
-   timeZone = float(cityList[3])
-
+   city, latitude, longitude, timeZone = getRowdata(cityTable[i])
    pl = Location(city, latitude, longitude, timeZone)
    pl.printrecord()
 
