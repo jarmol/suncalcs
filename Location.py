@@ -245,14 +245,10 @@ def delivery(ps1, ps2, pl1):
 
     delta = daylen(ps1, ps2)
     tnoon = noonts(ps1, ps2)
-
-    print ("Sunrise:   %s" % s1)
-    print ("Sunset:    %s" % s2)
-    print ("Noon time: %s" % tnoon)
-    print ("Daylength: %s" % delta)
     avgdecl = getdeclination(ps1, ps2)
     maxht = getmaxelevation(pl1, avgdecl)
-    print ("Max elevation: %.2f degrees" % maxht)
+    print  " Sunrise   Sunset    Noon time Day length Max elevation Sun declination"
+    print (" %s  %s  %s  %s  %7.2f  %12.2f" % (s1, s2, tnoon, delta, maxht, avgdecl))
 
 def getdeclination(ps1, ps2):
     decl1 = ps1.Declination # by sunrise

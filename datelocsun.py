@@ -33,6 +33,6 @@ for i in range(0, nr):
    solpb = Solar(dnr, pl, "SET", znt_official)
    delivery(solpa, solpb, pl)
 
-   meandecl = getdeclination(solpa, solpb)
-   print("Declination %.2f degrees at noon" % meandecl)
+#   meandecl = getdeclination(solpa, solpb)
+#   print("Declination %.2f degrees at noon" % meandecl)
    print("-----------\n")
