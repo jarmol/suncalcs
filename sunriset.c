@@ -47,7 +47,6 @@ Released to the public domain by Paul Schlyter, December 1992
 #define acosd(x)    (RADEG*acos(x))
 #define atan2d(y,x) (RADEG*atan2(y,x))
 
-
 /* Following are some macros around the "workhorse" function __daylen__ */
 /* They mainly fill in the desired values for the reference altitude    */
 /* below the horizon, and also selects whether this altitude should     */
@@ -128,11 +127,11 @@ double GMST0( double d );
 
 /* A small test program */
 
-main()
+int main()
 {
       int year,month,day;
-      double lon, lat;
-      double daylen, civlen, nautlen, astrlen;
+      double lon, lat, d, RA, r ;
+      double daylen, civlen, nautlen, astrlen, sundec;
       double rise, set, civ_start, civ_end, naut_start, naut_end,
              astr_start, astr_end;
       int    rs, civ, naut, astr;
@@ -148,11 +147,16 @@ main()
             fgets(buf, 80, stdin);
             sscanf(buf, "%d %d %d", &year, &month, &day );
 
+            d = days_since_2000_Jan_0(year,month,day) + 0.5 - lon/360.0;
+            sun_RA_dec( d, &RA, &sundec, &r );
+
             daylen  = day_length(year,month,day,lon,lat);
             civlen  = day_civil_twilight_length(year,month,day,lon,lat);
             nautlen = day_nautical_twilight_length(year,month,day,lon,lat);
             astrlen = day_astronomical_twilight_length(year,month,day,
                   lon,lat);
+
+            printf( "Sun declination %5.2f \n", sundec);
 
             printf( "Day length:                 %5.2f hours\n", daylen );
             printf( "With civil twilight         %5.2f hours\n", civlen );
@@ -175,7 +179,7 @@ main()
                                           &astr_start, &astr_end );
 
             printf( "Sun at south %5.2fh UT\n", (rise+set)/2.0 );
-
+            
             switch( rs )
             {
                 case 0:
@@ -365,6 +369,8 @@ double __daylen__( int year, int month, int day, double lon, double lat,
       /* Compute sine and cosine of Sun's declination */
       sin_sdecl = sind(obl_ecl) * sind(slon);
       cos_sdecl = sqrt( 1.0 - sin_sdecl * sin_sdecl );
+
+      /* printf( "Sun declination %5.2f \n", asind(sin_sdecl)); */
 
       /* Compute the Sun's apparent radius, degrees */
       sradius = 0.2666 / sr;
