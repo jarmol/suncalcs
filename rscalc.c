@@ -88,7 +88,7 @@ int hr,mn;
 hr=(int) dhr;
 mn = (dhr - (double) hr)*60;
 
-printf("%0d:%0d",hr,mn);
+printf("%2d:%02d",hr,mn);
 };
 
 int main(void){
