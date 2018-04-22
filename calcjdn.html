@@ -1,0 +1,40 @@
+<!doctype html>
+    <head>
+    <meta charset="utf-8">
+    <title>Julian Date</title>
+    </head>
+<body>
+Input date Safari yyyy.mm.dd, Firefox dd.mm.yyyy<br> 
+<input id="datein" type="date" size=12>
+<p id="demo">JD Calculation of the given date</p>
+<button onClick="calculate()">Calculate</button>
+
+<script>
+function calculate() {
+   let dvalue = document.getElementById("datein").value;
+   let A = Array(3); 
+   if (dvalue.indexOf("-") > 0) { A = dvalue.split("-");}
+   else {A = dvalue.split(".")}; 
+   let [year, month, day] = A;
+   console.log("Date:", day, month, year);
+   let jdate = jdncalc(day, month, year);
+   console.log("JDN Gregorian calendar", jdate);
+   document.getElementById("demo").innerHTML 
+   = `Date ${year}-${month}-${day} Julian Date = ${jdate}`;
+}
+
+const jdncalc = function(D, M, Y) { 
+   "use strict";
+   console.log("Laskentapvm", Y, M, D);
+   let quot = (y, x) => Math.floor(y/x);
+   let a = quot(14 - M, 12);
+   let y = 1*Y + 4800 - a;
+   let m = 1*M + 12*a - 3;
+   let JDN = 1*D + quot(153*m + 2, 5) + 365*y + quot(y, 4)
+    - quot(y,100) + quot(y, 400) - 32045;
+   return JDN
+}
+
+</script>
+    </body>
+</html>
