@@ -4,8 +4,10 @@
     <title>Julian Date</title>
     </head>
 <body>
-Input date Safari yyyy.mm.dd, Firefox dd.mm.yyyy<br> 
-<input id="datein" type="date" size=12>
+Input date Firefox dd.mm.yyyy, Safari yyyy.mm.dd<br> 
+<input id="datein" type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"><p>
+Input UTC time<br> 
+<input id="timein" type="time" required pattern="[0-9]{2}:[0-9]{2}">
 <p id="demo">JD Calculation of the given date</p>
 <button onClick="calculate()">Calculate</button>
 
@@ -13,14 +15,27 @@ Input date Safari yyyy.mm.dd, Firefox dd.mm.yyyy<br>
 function calculate() {
    let dvalue = document.getElementById("datein").value;
    let A = Array(3); 
+   let B = Array(2);
    if (dvalue.indexOf("-") > 0) { A = dvalue.split("-");}
    else {A = dvalue.split(".")}; 
-   let [year, month, day] = A;
+   let [year, month, day] = A.map(i => Number(i));
    console.log("Date:", day, month, year);
    let jdate = jdncalc(day, month, year);
    console.log("JDN Gregorian calendar", jdate);
+
+   B = timein.value.split(":");
+   [hrs, mns] = B.map(n => Number(n));
+   console.log("Time UTC", [hrs, mns]);
+   let jtime = jdcalc(jdate, hrs, mns);
+   console.log(`JD = ${jtime} at ${hrs}:${mns}`);
+   
    document.getElementById("demo").innerHTML 
-   = `Date ${year}-${month}-${day} Julian Date = ${jdate}`;
+   = `Date ${year}-${month}-${day} Julian Day Number JDN = ${jdate}`
+   + `<br>JD = ${jtime} at UTC ` + timein.value;
+}
+
+const jdcalc  = function(jd, hour, minute) {
+      return jd + (hour - 12)/24 + minute/1440;
 }
 
 const jdncalc = function(D, M, Y) { 
@@ -28,9 +43,9 @@ const jdncalc = function(D, M, Y) {
    console.log("Laskentapvm", Y, M, D);
    let quot = (y, x) => Math.floor(y/x);
    let a = quot(14 - M, 12);
-   let y = 1*Y + 4800 - a;
-   let m = 1*M + 12*a - 3;
-   let JDN = 1*D + quot(153*m + 2, 5) + 365*y + quot(y, 4)
+   let y = Y + 4800 - a;
+   let m = M + 12*a - 3;
+   let JDN = D + quot(153*m + 2, 5) + 365*y + quot(y, 4)
     - quot(y,100) + quot(y, 400) - 32045;
    return JDN
 }
