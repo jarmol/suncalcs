@@ -4,6 +4,7 @@
     <title>Julian Date</title>
     </head>
 <body>
+
 Input date Firefox dd.mm.yyyy, Safari yyyy.mm.dd<br> 
 <input id="datein" type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"><p>
 Input UTC time<br> 
@@ -12,6 +13,32 @@ Input UTC time<br>
 <button onClick="calculate()">Calculate</button>
 
 <script>
+function myInit(){
+let dateObj = new Date();
+let month = dateObj.getUTCMonth() + 1; //months from 1-12
+let day = dateObj.getUTCDate();
+let year = dateObj.getUTCFullYear();
+let hour = dateObj.getHours();
+let mins = dateObj.getMinutes();
+let tzone = dateObj.getTimezoneOffset()/-60;
+
+var prezero = function(n) {
+  //let zfill = "";
+  ((n < 0) ? n += 24 : n);
+  return ((n < 10) ? "0" : "") + n; 
+}
+
+let today = year + "-" +  prezero(month) + "-" + prezero(day);
+let now   = prezero(hour - tzone) + ":" + prezero(mins);
+console.log(today);
+console.log("UTC time: %s = Local %2d:%2d UTC+%3d", now, hour, mins, tzone);
+document.getElementById("demo").innerHTML = today;
+document.getElementById("datein").value = today;
+document.getElementById("timein").value = now;
+}
+
+myInit();
+
 function calculate() {
    let dvalue = document.getElementById("datein").value;
    let A = Array(3); 
@@ -25,13 +52,13 @@ function calculate() {
 
    B = timein.value.split(":");
    [hrs, mns] = B.map(n => Number(n));
-   console.log("Time UTC", [hrs, mns]);
+   console.log("Time UTC", timein.value);
    let jtime = jdcalc(jdate, hrs, mns);
-   console.log(`JD = ${jtime} at ${hrs}:${mns}`);
+   console.log("JD = %12.4f at UTC %2d:%2d", jtime, hrs, mns);
    
    document.getElementById("demo").innerHTML 
    = `Date ${year}-${month}-${day} Julian Day Number JDN = ${jdate}`
-   + `<br>JD = ${jtime} at UTC ` + timein.value;
+   + `<br>JD = ${jtime.toFixed(4)} at UTC ` + timein.value;
 }
 
 const jdcalc  = function(jd, hour, minute) {
