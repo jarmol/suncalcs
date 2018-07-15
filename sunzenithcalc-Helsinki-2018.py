@@ -94,9 +94,7 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
     if (suncalctype == "SUNRISE" ):
         H = 360 - H
 
-#  if setting time is desired:
-
-    H = H / 15
+    H = H / 15	# Hourangleas hours
 
 #  8. calculate local mean time of rising/setting
     T = H + RA - (0.06571 * t) - 6.622
@@ -116,7 +114,7 @@ def suncalc(year, month, day, suncalctype, lat1, lot1, localOffset, zenith):
        localT = UT + localOffset
        print("Sunset local time is %.4f hours = %s" % (localT, human(localT)))
 
-    return UT, declination
+    return UT, declination, H
 # end of suncalc()
 
 # Main begin
@@ -126,8 +124,10 @@ day = int(raw_input('Enter day --> '))
 
 # Call suncalc()
 print "1. SUNRISE"
-UT1, declination = suncalc(2018, month, day, "SUNRISE", 60.16, 24.96, 2.0, znt_official)
+UT1, declination, H = suncalc(2018, month, day, "SUNRISE", 60.16, 24.96, 2.0, znt_official)
+H1 = 24.0 - H
 print("UT1 %.4f Declination %.4f" % (UT1, declination)) 
+print("Hour angle %.4f hours = %s" %(H1, human(H1)))
 
 print "\n2. CIVIL TWILIGHT"
 suncalc(2018, month, day, "SUNRISE", 60.16, 24.96, 2.0, znt_civil)
@@ -140,9 +140,11 @@ suncalc(2018, month, day, "SUNRISE", 60.16, 24.96, 2.0, znt_astronomical)
 
 print "\n-------\n"
 print "1. SUNSET"
-UT2, declination = suncalc(2018, month, day, "SUNSET", 60.16, 24.96, 2.0, znt_official)
-print("UT2 %.4f Declination %.4f" % (UT2, declination)) 
-print("Daylength %.4f hours = %s" % ((UT2 - UT1), human(UT2 - UT1)))
+UT2, declination, H2 = suncalc(2018, month, day, "SUNSET", 60.16, 24.96, 2.0, znt_official)
+print("UT2 %.4f Declination %.4f" % (UT2, declination))
+print("Hour angle %.4f hours = %s" %(H2, human(H2)))
+print("Daylengt from hour angles %.4f = %s" % (H1 + H2, human(H1 + H2))) 
+print("Daylength as difference of Sunrise and Sunset %.4f hours = %s" % ((UT2 - UT1), human(UT2 - UT1)))
 
 print "\n2. CIVIL TWILIGHT"
 suncalc(2018, month, day, "SUNSET", 60.16, 24.96, 2.0, znt_civil)
