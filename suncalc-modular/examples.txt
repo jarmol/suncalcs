@@ -1,0 +1,64 @@
+1. Example: Current time calculation
+   After nautical twilight, sun elevation less than -12°
+
+$ ./calculator > examples.txt
+ 
+ Nautical twilight   Wed, 6 Feb 2019 06:58:46 +0200
+ Civil twilight time Wed, 6 Feb 2019 08:00:40 +0200
+ Sunrise time        Wed, 6 Feb 2019 09:00:15 +0200
+ Noon time           Wed, 6 Feb 2019 12:37:21 +0200
+ Sunset time         Wed, 6 Feb 2019 16:14:26 +0200
+ Civil twilight time Wed, 6 Feb 2019 17:14:02 +0200
+ Nautical twilight   Wed, 6 Feb 2019 18:15:56 +0200
+ Daylength            07:14:10
+ Sun declination    -15.5547°
+ Zenith at noon        106.2414°
+ Sun elevation corr.    -16.2216°
+ Atmospher. refraction  0.0198°
+ Azimuth at sunrise   128.54°
+ Azimuth at calc. t.  268.11°
+ Azimuth at sunset    231.46°
+ Equation of Time     -14.08 minutes
+ Julian day       2458521
+ Local time JD    2458521.2068
+
+ Calculation time:   Wed, 6 Feb 2019 18:57:44 +0200
+ Tornio: Latitude    65.85° N, longitude 24.18° E
+
+ ==========================================
+
+Current seconds 1549472264
+Hour angle           95.0941°
+Solar elevation      -16.2414°
+
+2. Example fixed date and time calculation
+   Time ca. at noon => max sun elevation and azimuth 180°
+
+$ ./calculator >> examples.txt  
+ Nautical twilight   Fri, 1 Feb 2019 07:12:31 +0200
+ Civil twilight time Fri, 1 Feb 2019 08:16:02 +0200
+ Sunrise time        Fri, 1 Feb 2019 09:18:53 +0200
+ Noon time           Fri, 1 Feb 2019 12:36:49 +0200
+ Sunset time         Fri, 1 Feb 2019 15:54:45 +0200
+ Civil twilight time Fri, 1 Feb 2019 16:57:36 +0200
+ Nautical twilight   Fri, 1 Feb 2019 18:01:07 +0200
+ Daylength            06:35:51
+ Sun declination    -17.1172°
+ Zenith at noon        82.9672°
+ Sun elevation corr.    7.1541°
+ Atmospher. refraction  0.1213°
+ Azimuth at sunrise   133.4°
+ Azimuth at calc. t.  180.04°
+ Azimuth at sunset    226.6°
+ Equation of Time     -13.54 minutes
+ Julian day       2458516
+ Local time JD    2458515.9424
+
+ Calculation time:   Fri, 1 Feb 2019 12:37:00 +0200
+ Tornio: Latitude    65.85° N, longitude 24.18° E
+
+ ==========================================
+
+Current seconds 1549017420
+Hour angle           0.0441°
+Solar elevation      7.0328°

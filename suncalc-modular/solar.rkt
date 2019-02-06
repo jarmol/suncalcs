@@ -1,4 +1,4 @@
-#lang racket
+#lang racket/base
 (provide sunDeclination declination HAsunRise dayLength eqOfTime
          HAcivilTwilight HAnautical noonTime TrueSolarTime AMnauticalTwilightTime AMcivilTwilightTime
          sunriseTime sunsetTime PMcivilTwilightTime PMnauticalTwilightTime hourAngle atRefract
@@ -69,7 +69,7 @@
 (def declination (sunDeclination centEpoc))
 
 ; parameter y
-(def y (sqr (tand (/ (obliqCorr centEpoc) 2.)))) 
+(def y (expt (tand (/ (obliqCorr centEpoc) 2.)) 2.)) 
 
 ; Equation of time
 (def (eqOfTime cent) (* 4 (toDegrees (- (+ (- (* y (sind (* 2 meanLongSun)))
@@ -82,8 +82,6 @@
 (def zenithSunriseSunset 90.833)
 (def zenithCivilTwilight 96.0)
 (def zenithNautical 102.)
-
-;(def geoLatitude 65.85) ; Tornio latitude
 
 ; HA Twilight
 (def (HAw zenith) (toDegrees (acos  (- (/ (cosd zenith) (* (cosd geoLatitude) (cosd declination))) (* (tand geoLatitude) (tand declination))))))  
@@ -137,9 +135,9 @@
 )
 
 ; Azimuths for different times
-(define noonAzimuth   (Azimuth hourAngle geoLatitude (solZenith geoLatitude declination hourAngle) declination))
-(define sunsetAzimuth (Azimuth HAsunRise geoLatitude zenithSunriseSunset declination))
-(define sunriseAzimuth (Azimuth (- HAsunRise 180.) geoLatitude zenithSunriseSunset declination))
+(define noonAzimuth    (Azimuth    hourAngle       geoLatitude (solZenith geoLatitude declination hourAngle) declination))
+(define sunsetAzimuth  (Azimuth    HAsunRise       geoLatitude  zenithSunriseSunset   declination))
+(define sunriseAzimuth (Azimuth (- HAsunRise 180.) geoLatitude  zenithSunriseSunset   declination))
 
 
 (def AMnauticalTwilightTime (- noonTime (/ HAnautical 360.)))    ; Before Sunrise Nautical Twilight time

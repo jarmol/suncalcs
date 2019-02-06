@@ -1,4 +1,4 @@
-#lang racket
+#lang racket/base
 ; Sunrise, Sunset, noon, daylength, max altitude
 ; for given date and location
 ; solar-calc
@@ -10,6 +10,9 @@
 ; Less imported parametres from the module solar.rkt 2018-12-27
 ; Location and timezone from the file indata.rkt
 ; calculation date and time from juliandates.rkt
+; Either fixed time or current time is selected in juliandates.rkt 2018-12-30
+; The main file and the modules need only racket/base 2019-01-05
+; Correction to fixed date output
 
 (require racket/date)
 (require "indata.rkt")
@@ -20,27 +23,30 @@
 
 (define-syntax-rule (def id body) (define id body))
 
-; Sun declination
-(check-within declination -16.5678 1.0e-04)  ; Test OK
-
 ; Solar times to date common time strings
-(define (getHours xTime) (exact-floor (* 24. xTime)))
-(define (getMinutes xTime) (modulo (exact-floor (/ (* 24 3600 xTime) 60)) 60))
-(define (getSeconds xTime) (modulo (exact-floor (* 24 3600 xTime)) 60))
+(define (getHours xTime) (inexact->exact (floor (* 24. xTime))))
+(define (getMinutes xTime) (modulo (inexact->exact (floor (/ (* 24. 3600. xTime) 60))) 60))
+(define (getSeconds xTime) (modulo (inexact->exact (floor (* 24. 3600. xTime))) 60)) 
 
-(define (suntimes xTime) (date->string (seconds->date (find-seconds (getSeconds xTime)
-                                                       (getMinutes xTime) 
-                                                       (getHours xTime) 8 11 2018) #t) #t))
+(define (setDayMonth fixT xTim) (if fixT (find-seconds (getSeconds xTim)
+                                                       (getMinutes xTim)
+                                                       (getHours xTim) day month year)
+                                         (find-seconds (getSeconds xTim)
+                                                       (getMinutes xTim)
+                                                       (getHours xTim) day2 month2 year)))
 
-(define (fixed4 x) (/ (round (* 1.0e4 x)) 1.0e4))
+(define (suntimes xTime) (date->string (seconds->date (setDayMonth fixedTime xTime) #t) #t))
+
+
+(define (fixed2 x) (/ (round (* 1.0E2 x)) 1.0E2))
 (define (fixed6 x) (/ (round (* 1.0e6 x)) 1.0e6))
 
 (define _out (open-output-string))
 
 (fprintf _out "Current seconds ~a\n" currsecs)
 
-(fprintf _out "Hour angle               ~a°~n" (fixed4 hourAngle))
-(fprintf _out "Solar elevation           ~a°~n" (fixed4 solarElevation))
+(fprintf _out "Hour angle           ~a°~n" (fixed4 hourAngle))
+(fprintf _out "Solar elevation      ~a°~n" (fixed4 solarElevation))
 
 (define op2 (open-output-string))
 
@@ -57,14 +63,14 @@
 
 (if (real? dayLength) (fprintf op2 " Daylength            ~a\n" (substring (suntimes dayLength) 16 24)) " Daylength not determined")
 
-(fprintf op2 " Sun declination      ~a°~n" (fixed4 declination))
+(fprintf op2 " Sun declination    ~a°~n" (fixed4 declination))
 (fprintf op2 " Zenith at noon        ~a°~n" (fixed4 noonZenith))
 (fprintf op2 " Sun elevation corr.    ~a°~n" (fixed4 correctedElevation))
 (fprintf op2 " Atmospher. refraction  ~a°~n" (fixed4 (atRefract solarElevation)))
-(fprintf op2 " Azimuth at sunrise   ~a°~n" (~r sunriseAzimuth #:precision 3))
-(fprintf op2 " Azimuth at calc. t.  ~a°~n" (~r noonAzimuth    #:precision 3))
-(fprintf op2 " Azimuth at sunset    ~a°~n" (~r sunsetAzimuth  #:precision 3))
-(fprintf op2 " Equation of Time      ~a minutes~n" (~r (eqOfTime centEpoc) #:precision 2))
+(fprintf op2 " Azimuth at sunrise   ~a°~n" (fixed2 sunriseAzimuth))
+(fprintf op2 " Azimuth at calc. t.  ~a°~n" (fixed2 noonAzimuth))
+(fprintf op2 " Azimuth at sunset    ~a°~n" (fixed2 sunsetAzimuth))
+(fprintf op2 " Equation of Time     ~a minutes~n" (fixed2 (eqOfTime centEpoc)))
 (fprintf op2 " Julian day       ~a\n" JD) ; See https://ssd.jpl.nasa.gov/tc.cgi#top
 (fprintf op2 " Local time JD    ~a\n" (fixed4 t2JD)) ; alternative tJD
 
