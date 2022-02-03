@@ -2,10 +2,7 @@
 #include <math.h>
 
 // Setup
-// Location Tornio
-double latitude = 65.85;
-double longitude = 24.18;
-
+float latitude, longitude, TZ;
 int testOpt = 0;
 
 // Date
@@ -143,21 +140,22 @@ double maxAltit(double declin, double latit) {
 }
 
 int main(void) {
+      int flag = 0;
       int rowNr;
-      int rmax = 3;
+      int rmax = 4;
       const char* sarots[3] = {"  Lat. ", "  Long.", " TZ"};
-      const char* nimet[4] = {"Helsinki", "Tukholma", "Berliini", "Wien"};
-      float taulukko[4][4] = { { 60.17, 24.95, 2.0 }, { 59.33, 18.07, 1.0 },
-            { 52.52, 13.38, 1.0}, {48.22, 16.37, 1.0} };
+      const char* nimet[5] = {"Helsinki", "Stockholm", "Berlin", "Wien", "Tornio"};
+      float taulukko[5][4] = { { 60.17, 24.95, 2.0 }, { 59.33, 18.07, 1.0 },
+            { 52.52, 13.38, 1.0}, {48.22, 16.37, 1.0}, {65.85, 24.18, 2.0} };
 
-      printf("  %9s", " Location");
+      printf("  %9s", "Location");
 
       for (int j = 0; j < 3; ++j) {
          printf("%10s ", sarots[j]);
       }; putchar('\n');
 
-      for (int i = 0; i < 4; ++i) {
-         printf("%d) %8s ", i, nimet[i]);
+      for (int i = 0; i <= rmax; ++i) {
+         printf("%d) %9s ", i, nimet[i]);
          for (int j = 0; j < 3; ++j) {
             printf(" %8.2f   ", taulukko[i][j]);
          };
@@ -180,18 +178,22 @@ int main(void) {
       printf("default date %d-%d-%d\n",year, month, day);
       printf("Enter month (%d): ", month);
       scanf("%d", &qmonth);
-      if (qmonth > 0) month = qmonth;
+      if (qmonth == 0) qmonth = month;
+      if (qmonth > 12) flag = 1;
+      if (flag == 0) month = qmonth;
       printf("You entered month %d\n", month);
       printf("Enter day (%d): ", day);
       scanf("%d", &qday);
-      if (qday > 0) day = qday;
+      if (qday == 0) qday = day;
+      if (qday < 0) flag = 2;
+      if (qday > 31) flag = 2;
+
+      if (flag == 0) day = qday;
       printf("You entered day %d\n", day);
 
-      //printf("You entered day %d\n", day);
-
-      int    dnr = dayNr(year, month, day); // 168
-      double timeLR = tLongRise(longitude, dnr); // 168.1808
-      double timeLS = timeLR + 0.5;              // 168.6808 12 h later
+      int    dnr = dayNr(year, month, day);
+      double timeLR = tLongRise(longitude, dnr);
+      double timeLS = timeLR + 0.5;   // 12 h later
       double corRASunrise = correctQuadr(trueLong(timeLR), calcRA(timeLR));
       double corRASunset = correctQuadr(trueLong(timeLS), calcRA(timeLS));
       double hrSunriseRA = corRASunrise/15;
@@ -279,4 +281,10 @@ int main(void) {
       return 0;
 	}
 
-// c.f. Helsinki_June.ods
+// Source:
+//  Almanac for Computers, 1990
+//  published by Nautical Almanac Office
+//  United States Naval Observatory
+//  Washington, DC 20392
+
+// See https://edwilliams.org/sunrise_sunset_algorithm.htm
